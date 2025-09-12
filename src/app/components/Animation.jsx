@@ -16,6 +16,11 @@ const Animation = () => {
         setAnimKey((prev) => prev + 1);
     };
 
+    const animateImg = [
+        { img: "/bg/543359019_2306187366479674_2760109373113052233_n.jpg", number: "-1" },
+        { img: "/gallary/541962282_1880236069552184_3769267227423714204_n.jpg", number: "-2" },
+    ];
+
     return (
         <div className="relative w-full">
             <Swiper
@@ -35,15 +40,19 @@ const Animation = () => {
                 modules={[Pagination, Navigation, Mousewheel, Autoplay]}
                 className="mySwiper h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] w-full"
             >
-                {["-1", "-2", "-3", "-4"].map((item, idx) => (
+                {animateImg.map((item) => (
                     <SwiperSlide
-                        key={animKey + item}
-                        className="bg-[url('/bg/543359019_2306187366479674_2760109373113052233_n.jpg')] bg-cover bg-center relative"
+                        key={animKey + item.number}
                     >
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                            <p className="text-white animation text-lg sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4">
-                                {lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}
-                            </p>
+                        <div
+                            className="w-full h-full bg-cover bg-center relative"
+                            style={{ backgroundImage: `url(${item.img})` }}
+                        >
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                <p className="text-white animation text-lg sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4">
+                                    {lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}
+                                </p>
+                            </div>
                         </div>
                     </SwiperSlide>
                 ))}

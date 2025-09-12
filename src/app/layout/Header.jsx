@@ -65,7 +65,7 @@ export default function Header() {
                         className="h-12 w-12 rounded-full border border-gray-200 shadow"
                     />
 
-                    <div className="flex flex-col">
+                    <div className="flex sm:hidden flex-col">
                         <p className="text-sm">{lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}</p>
                         <p className="text-[9px]">{lang && "Bihigram Government Primary School"}</p>
                     </div>

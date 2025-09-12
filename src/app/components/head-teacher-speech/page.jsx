@@ -1,30 +1,34 @@
 "use client";
-import React from "react";
+import { UserContext } from "@/app/Provider";
+import React, { useContext } from "react";
 
 export default function PrincipalMessagePage() {
+    const { lang } = useContext(UserContext);
     return (
         <main className="bg-gray-50 min-h-screen py-10 px-4">
             <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
                 {/* Hero / Header */}
                 <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6">
-                    <h1 className="text-2xl md:text-3xl font-bold">প্রধান শিক্ষিকার বাণী</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold">প্রধান শিক্ষকের বাণী</h1>
                     <p className="mt-1 opacity-90">শিক্ষা, নৈতিকতা ও সৃজনশীলতায় শিক্ষার্থীদের গড়ে তোলা আমাদের লক্ষ্য</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
                     {/* Left: Photo + Basic Info */}
                     <div className="flex flex-col items-center md:items-start md:col-span-1">
-                        <div className="w-44 h-44 rounded-full overflow-hidden border-4 border-white shadow-md -mt-20">
+                        <div className="w-44 h-44 rounded-full overflow-hidden border-4 border-white shadow-md -mt-12">
                             <img
-                                src="/principal.jpg"
-                                alt="প্রধান শিক্ষিকা"
+                                src="/gallary/546418052_1271174001450094_7641773692659982191_n.jpg"
+                                alt="প্রধান শিক্ষক"
                                 className="w-full h-full object-cover"
                             />
                         </div>
 
                         <div className="text-center md:text-left mt-4">
-                            <h2 className="text-xl font-semibold text-gray-800">মিসেস আফাজা রহমান</h2>
-                            <p className="text-sm text-gray-500 mt-1">প্রধান শিক্ষিকা</p>
+                            <h2 className="text-xl font-semibold text-gray-800">
+                                {lang ? "মোঃ আশরাফুল আলম" : "MD Asraful Alam"}
+                            </h2>
+                            <p className="text-sm text-gray-500 mt-1">প্রধান শিক্ষক</p>
 
                             <div className="mt-4 space-y-2 text-sm text-gray-700">
                                 <p><strong>ঠিকানা:</strong> ১২৩, পল্লী রোড, রাজশাহী</p>
@@ -35,7 +39,7 @@ export default function PrincipalMessagePage() {
                             <div className="mt-4 flex gap-3">
                                 <a
                                     href="#"
-                                    className="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
                                 >
                                     বিস্তারিত
                                 </a>
@@ -52,7 +56,7 @@ export default function PrincipalMessagePage() {
                     {/* Right: Message + Bio */}
                     <div className="md:col-span-2">
                         <div className="bg-white p-6 rounded-xl shadow-sm border">
-                            <h3 className="text-lg font-bold text-gray-800">প্রধান শিক্ষিকার বাণী</h3>
+                            <h3 className="text-lg font-bold text-gray-800">প্রধান শিক্ষকের বাণী</h3>
 
                             <p className="mt-4 text-gray-700 leading-relaxed text-justify">
                                 মানুষের জ্ঞানের তৃষ্ণা আছে। তৃষ্ণা মেটানোর জন্য মানুষ শিক্ষা

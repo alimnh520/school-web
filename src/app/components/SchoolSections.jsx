@@ -10,14 +10,14 @@ const SchoolSections = () => {
     const messages = [
         {
             title: lang ? "সভাপতির বাণী" : "President's Speech",
-            name: lang ? "মোছাঃ রুমানা আফরোজ" : "Miss Rumana Afroz",
-            img: "/president.jpg",
+            name: lang ? "নিশাত আনজুম অনন্যা" : "Nishat Anjum Anana",
+            img: "/gallary/546404152_24531347109814854_5838466105101725304_n.jpg",
             link: `/components/presidents-speech`,
         },
         {
             title: lang ? "প্রধান শিক্ষকের বাণী" : "Head Teacher's message",
             name: lang ? "মোঃ আশরাফুল আলম" : "MD Asraful Alam",
-            img: "/headteacher.jpg",
+            img: "/gallary/546418052_1271174001450094_7641773692659982191_n.jpg",
             link: `/components/head-teacher-speech`,
         },
         {
@@ -28,24 +28,33 @@ const SchoolSections = () => {
         },
     ];
 
+    const photos = [
+        {
+            title: lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়ের দৈনিক সমাবেশ" : "Bihigram Government Primary School's daily assembly",
+            img: "/gallary/543696026_1728128884555647_4348034258953975320_n.jpg",
+        },
+        {
+            title: lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়ের ফুটবল টুর্নামেন্ট" : "Bihigram Government Primary School Football Tournament",
+            img: "/gallary/542873456_1449657939657657_1946766527660110407_n.jpg",
+        },
+    ]
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4 sm:p-6 bg-gray-50">
             {/* বাম পাশে অনুষ্ঠান ছবি */}
             <div className="lg:col-span-2 space-y-6">
-                {[1, 2].map((item, i) => (
+                {photos.map((item, i) => (
                     <div key={i} className="flex flex-col gap-y-3">
                         <div className="relative w-full h-56 sm:h-72 md:h-96 border-t-4 border-green-500 rounded-2xl overflow-hidden shadow-lg">
                             <Image
-                                src="/event1.jpg"
+                                src={item.img}
                                 alt="অনুষ্ঠান ছবি"
                                 fill
                                 className="object-cover"
                             />
                         </div>
                         <p className="text-gray-700 text-base sm:text-lg font-medium leading-relaxed">
-                            {lang
-                                ? "আদর্শীনি আই পি জে পাইওনিয়ার উচ্চ বিদ্যালয়ের শতবর্ষ উৎসব উপলক্ষে গত শুক্রবার অনুষ্টানের দ্বিতীয় দিনে এক বিশাল র‍্যালি বের হয়।"
-                                : "A grand rally was held on the second day of the centenary celebrations of Adarshini IPJ Pioneer High School last Friday."}
+                           {item.title}
                         </p>
                     </div>
                 ))}

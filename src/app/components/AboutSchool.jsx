@@ -29,8 +29,8 @@ export default function AboutInstitute() {
                             : `Humans have a thirst for knowledge. To satisfy this thirst, people acquire knowledge from educational institutions. Above all, they realize the importance of education in order to dispel the fog of darkness and illuminate the world with the light of education. `}
                         <span className="font-semibold text-blue-600">
                             {lang
-                                ? "মা-মনি শিশু-কিশোর একাডেমি"
-                                : "Ma-Moni Children and Adolescents Academy"}
+                                ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়"
+                                : "Bihigram Government Primary School"}
                         </span>
                         {lang
                             ? ` নামক এই ঐতিহ্যবাহী বিদ্যাপীঠটি প্রতিষ্ঠিত।`

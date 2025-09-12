@@ -10,13 +10,13 @@ export default function NoticeAndLinks() {
     const notices = [
         lang ? "ইউনিক আইডি" : "Unique ID",
         lang ? "বার্ষিক পরীক্ষার ফলাফল প্রকাশ" : "Annual Exam Result Release",
-        lang ? "এসএসসি পরীক্ষার নির্বাচনী পরীক্ষার সূচি প্রকাশ" : "SSC'24 Election",
+        lang ? "প্রাথমিক শিক্ষা সমাপনী পরীক্ষার সূচি প্রকাশ" : "Primary Education Final Examination Schedule Published",
         lang ? "নির্বাচনী পরীক্ষার নোটিশ" : "Election Exam Notice",
     ];
 
     const links = [
         { name: lang ? "এন-টি-আর-সি-এ (NTRCA)" : "NTRCA", url: "#" },
-        { name: lang ? "মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর" : "Department of Secondary and Higher Education", url: "#" },
+        { name: lang ? "প্রাথমিক শিক্ষা অধিদপ্তর" : "Department of Secondary and Higher Education", url: "#" },
         { name: lang ? "শিক্ষা মন্ত্রণালয়" : "Ministry of Education", url: "#" },
         { name: lang ? "রাজশাহী শিক্ষা বোর্ড" : "Rajshahi Education Board", url: "#" },
         { name: lang ? "National Text Book Board (NCTB)" : "National Text Book Board (NCTB)", url: "#" },
