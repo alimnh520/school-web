@@ -43,14 +43,14 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 @font-face {
-  font-family: "SolaimanLipi";
-  src: url("/fonts/SolaimanLipi_29-05-06.ttf") format("truetype");
-  font-weight: normal;
+  font-family: "Bornomala";
+  src: url("/fonts/Bornomala-Regular.ttf") format("truetype");
+  font-weight: 900;
   font-style: normal;
 }
 
 body {
-  font-family: sans-serif;
+  font-family: 'Bornomala', sans-serif;
 }
 
 .button-next,

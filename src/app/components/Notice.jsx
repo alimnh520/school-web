@@ -69,7 +69,7 @@ export default function NoticeAndLinks() {
             </div>
 
             {/* Important Links */}
-            <div className="bg-[url('/bg/paper-texture.jpg')] bg-cover bg-center shadow-lg rounded-2xl p-4 sm:p-6 border-t-4 border-purple-500">
+            <div className="bg-white shadow-lg rounded-2xl p-4 sm:p-6 border-t-4 border-purple-500">
                 <h2 className="flex items-center gap-2 text-lg sm:text-xl font-bold text-purple-700 mb-4">
                     <LinkIcon className="w-6 h-6" /> {lang ? "গুরুত্বপূর্ণ লিংক" : "Important Links"}
                 </h2>

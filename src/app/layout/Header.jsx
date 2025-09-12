@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useContext, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { UserContext } from "../Provider";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
     const [open, setOpen] = useState(false); // mobile nav
-    const { setLang, lang } = useContext(UserContext);
+    const { setLang, info, lang } = useContext(UserContext);
+    const path = usePathname();
 
     return (
         <header className="shadow-md uppercase">
@@ -23,15 +25,23 @@ export default function Header() {
                         <Link href="#" className="hover:underline">
                             {lang ? "ভর্তি ফরম" : "Admission"}
                         </Link>
+                        <span className="text-white/60 hidden sm:inline">|</span>
                         <Link href="#" className="hover:underline">
                             {lang ? "ফলাফল" : "Result"}
                         </Link>
-                        <Link href="#" className="hover:underline">
-                            {lang ? "প্রতিষ্ঠান লগইন" : "Institution Login"}
-                        </Link>
-                        <Link href="#" className="hover:underline">
-                            {lang ? "ওয়েবসাইট ড্যাশবোর্ড" : "Dashboard"}
-                        </Link>
+                        <span className="text-white/60 hidden sm:inline">|</span>
+                        {
+                            info ? (
+                                <Link href="#" className="hover:underline">
+                                    {lang ? "ওয়েবসাইট ড্যাশবোর্ড" : "Dashboard"}
+                                </Link>
+                            ) : (
+                                <Link href="#" className="hover:underline">
+                                    {lang ? "প্রতিষ্ঠান লগইন" : "Institution Login"}
+                                </Link>
+                            )
+                        }
+                        <span className="text-white/60 hidden sm:inline">|</span>
                     </div>
 
                     {/* Language toggles */}
@@ -74,17 +84,17 @@ export default function Header() {
 
                 {/* Desktop Menu */}
                 <ul className="hidden md:flex text-sm space-x-6 font-medium text-gray-700">
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "আমাদের সম্পর্কে" : "about us"}</Link></li>
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "প্রশাসনিক তথ্য" : "Administrative"}</Link></li>
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "শিক্ষক এবং কর্মচারী" : "Teachers & Staff"}</Link></li>
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "একাডেমিক তথ্য" : "Academic"}</Link></li>
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "সহপাঠ্যক্রম" : "Co-curricular"}</Link></li>
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "ভর্তি সংক্রান্ত তথ্য" : "Admission"}</Link></li>
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "ছাত্র/ছাত্রী তথ্য" : "Student Info"}</Link></li>
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "পরীক্ষা সংক্রান্ত তথ্য" : "Exam Info"}</Link></li>
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "ফলাফল" : "Result"}</Link></li>
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "গ্যালারী" : "Gallery"}</Link></li>
-                    <li><Link href="#" className="hover:text-green-600 transition">{lang ? "অভিযোগ বাক্স" : "Complaint"}</Link></li>
+                    <li><Link href="/category/about" className={`hover:text-green-600 ${path === '/category/about' && 'text-green-600'} transition`}>{lang ? "আমাদের সম্পর্কে" : "about us"}</Link></li>
+                    <li><Link href="/category/administrative" className={`hover:text-green-600 ${path === '/category/administrative' && 'text-green-600'} transition`}>{lang ? "প্রশাসনিক তথ্য" : "Administrative"}</Link></li>
+                    <li><Link href="/category/teacher-staff" className={`hover:text-green-600 ${path === '/category/teacher-staff' && 'text-green-600'} transition`}>{lang ? "শিক্ষক এবং কর্মচারী" : "Teachers & Staff"}</Link></li>
+                    <li><Link href="/category/academic" className={`hover:text-green-600 ${path === '/category/academic' && 'text-green-600'} transition`}>{lang ? "একাডেমিক তথ্য" : "Academic"}</Link></li>
+                    <li><Link href="/category/co-curricular" className={`hover:text-green-600 ${path === '/category/co-curricular' && 'text-green-600'} transition`}>{lang ? "সহপাঠ্যক্রম" : "Co-curricular"}</Link></li>
+                    <li><Link href="/category/admission" className={`hover:text-green-600 ${path === '/category/admission' && 'text-green-600'} transition`}>{lang ? "ভর্তি সংক্রান্ত তথ্য" : "Admission"}</Link></li>
+                    <li><Link href="/category/students-information" className={`hover:text-green-600 ${path === '/category/students-information' && 'text-green-600'} transition`}>{lang ? "ছাত্র/ছাত্রী তথ্য" : "Student Info"}</Link></li>
+                    <li><Link href="/category/examination" className={`hover:text-green-600 ${path === '/category/examination' && 'text-green-600'} transition`}>{lang ? "পরীক্ষা সংক্রান্ত তথ্য" : "Exam Info"}</Link></li>
+                    <li><Link href="/category/result" className={`hover:text-green-600 ${path === '/category/result' && 'text-green-600'} transition`}>{lang ? "ফলাফল" : "Result"}</Link></li>
+                    <li><Link href="/category/gallery" className={`hover:text-green-600 ${path === '/category/gallery' && 'text-green-600'} transition`}>{lang ? "গ্যালারী" : "Gallery"}</Link></li>
+                    <li><Link href="/category/complaint" className={`hover:text-green-600 ${path === '/category/complaint' && 'text-green-600'} transition`}>{lang ? "অভিযোগ বাক্স" : "Complaint"}</Link></li>
                 </ul>
 
                 {/* Right-side actions for small screens: menu toggle */}
@@ -124,27 +134,33 @@ export default function Header() {
                         <Link href="#" className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
                             {lang ? "ফলাফল" : "Result"}
                         </Link>
-                        <Link href="#" className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
-                            {lang ? "প্রতিষ্ঠান লগইন" : "Institution Login"}
-                        </Link>
-                        <Link href="#" className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
-                            {lang ? "ওয়েবসাইট ড্যাশবোর্ড" : "website dashboard"}
-                        </Link>
+                        {
+                            info ? (
+                                <Link href="#" className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
+                                    {lang ? "ওয়েবসাইট ড্যাশবোর্ড" : "website dashboard"}
+                                </Link>
+                            ) : (
+                                <Link href="#" className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
+                                    {lang ? "প্রতিষ্ঠান লগইন" : "Institution Login"}
+                                </Link>
+                            )
+                        }
+
                     </div>
 
                     {/* mobile nav links */}
                     <nav className="grid grid-cols-1 gap-2">
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "আমাদের সম্পর্কে" : "about us"}</Link>
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "প্রশাসনিক তথ্য" : "Administrative"}</Link>
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "শিক্ষক এবং কর্মচারী" : "Teachers & Staff"}</Link>
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "একাডেমিক তথ্য" : "Academic"}</Link>
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "সহপাঠ্যক্রম" : "Co-curricular"}</Link>
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "ভর্তি সংক্রান্ত তথ্য" : "Admission"}</Link>
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "ছাত্র/ছাত্রী তথ্য" : "Student Info"}</Link>
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "পরীক্ষা সংক্রান্ত তথ্য" : "Exam Info"}</Link>
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "ফলাফল" : "Result"}</Link>
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "গ্যালারী" : "Gallery"}</Link>
-                        <Link href="#" className="block py-2 px-2 rounded hover:bg-gray-50">{lang ? "অভিযোগ বাক্স" : "Complaint"}</Link>
+                        <Link href="/category/about" className={`block py-2 px-2 rounded ${path === '/category/about' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "আমাদের সম্পর্কে" : "about us"}</Link>
+                        <Link href="/category/administrative" className={`block py-2 px-2 rounded ${path === '/category/administrative' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "প্রশাসনিক তথ্য" : "Administrative"}</Link>
+                        <Link href="/category/teacher-staff" className={`block py-2 px-2 rounded ${path === '/category/teacher-staff' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "শিক্ষক এবং কর্মচারী" : "Teachers & Staff"}</Link>
+                        <Link href="/category/academic" className={`block py-2 px-2 rounded ${path === '/category/academic' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "একাডেমিক তথ্য" : "Academic"}</Link>
+                        <Link href="/category/co-curricular" className={`block py-2 px-2 rounded ${path === '/category/co-curricular' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "সহপাঠ্যক্রম" : "Co-curricular"}</Link>
+                        <Link href="/category/admission" className={`block py-2 px-2 rounded ${path === '/category/admission' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "ভর্তি সংক্রান্ত তথ্য" : "Admission"}</Link>
+                        <Link href="/category/students-information" className={`block py-2 px-2 rounded ${path === '/category/students-information' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "ছাত্র/ছাত্রী তথ্য" : "Student Info"}</Link>
+                        <Link href="/category/examination" className={`block py-2 px-2 rounded ${path === '/category/examination' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "পরীক্ষা সংক্রান্ত তথ্য" : "Exam Info"}</Link>
+                        <Link href="/category/result" className={`block py-2 px-2 rounded ${path === '/category/result' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "ফলাফল" : "Result"}</Link>
+                        <Link href="/category/gallery" className={`block py-2 px-2 rounded ${path === '/category/gallery' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "গ্যালারী" : "Gallery"}</Link>
+                        <Link href="/category/complaint" className={`block py-2 px-2 rounded ${path === '/category/complaint' && 'bg-green-600 text-white'} hover:bg-gray-50`}>{lang ? "অভিযোগ বাক্স" : "Complaint"}</Link>
                     </nav>
 
                     {/* language toggle - mobile */}
@@ -164,6 +180,6 @@ export default function Header() {
                     </div>
                 </div>
             </div>
-        </header>
+        </header >
     );
 }

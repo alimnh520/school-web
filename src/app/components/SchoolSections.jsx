@@ -53,7 +53,7 @@ const SchoolSections = () => {
                                 className="object-cover"
                             />
                         </div>
-                        <p className="text-gray-700 text-base sm:text-lg font-medium leading-relaxed">
+                        <p className="text-gray-700 text-xl font-medium leading-relaxed">
                            {item.title}
                         </p>
                     </div>

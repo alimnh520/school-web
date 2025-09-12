@@ -28,7 +28,7 @@ export default function SchoolInfoPage() {
             items: lang
                 ? ["প্রতিষ্ঠান সম্পর্কে", "লক্ষ্য ও উদ্দেশ্য", "ইতিহাস", "যোগাযোগ করুন"]
                 : ["About the Institution", "Aims and Objectives", "History", "Contact"],
-            link: "",
+            link: "/category/about",
             color: "bg-blue-500",
         },
         {
@@ -48,7 +48,7 @@ export default function SchoolInfoPage() {
                     "Board of Directors Information",
                     "List of Donors",
                 ],
-            link: "",
+            link: "/category/administrative",
             color: "bg-purple-500",
         },
         {
@@ -58,7 +58,7 @@ export default function SchoolInfoPage() {
             items: lang
                 ? ["বিদ্যালয়ের স্থাপনকাল", "EIIN নম্বর", "MPO কোড", "বিদ্যালয়ের কোড"]
                 : ["Establishment Date", "EIIN Number", "MPO Code", "School Code"],
-            link: "",
+            link: "/category/about-school",
             color: "bg-pink-500",
         },
         {
@@ -68,7 +68,7 @@ export default function SchoolInfoPage() {
             items: lang
                 ? ["শিক্ষকদের তথ্য", "কর্মচারীদের তথ্য", "প্রাক্তন সদস্যদের তথ্য"]
                 : ["Teachers' Information", "Employees' Information", "Alumni Information"],
-            link: "",
+            link: "/category/teacher-staff",
             color: "bg-green-600",
         },
         {
@@ -88,7 +88,7 @@ export default function SchoolInfoPage() {
                     "Scholarship Students",
                     "Hostel Information",
                 ],
-            link: "",
+            link: "/category/students-information",
             color: "bg-orange-500",
         },
         {
@@ -104,7 +104,7 @@ export default function SchoolInfoPage() {
                     "Women and Child Abuse 109",
                     "ACC 106",
                 ],
-            link: "",
+            link: "/category/help-line",
             color: "bg-red-500",
         },
         {
@@ -114,7 +114,7 @@ export default function SchoolInfoPage() {
             items: lang
                 ? ["নোটিশ সমূহ", "ই-লেসন", "পাঠ্যপুস্তক তথ্য", "ছাত্রাবাস তথ্য"]
                 : ["Notices", "E-Lessons", "Textbook Information", "Hostel Information"],
-            link: "",
+            link: "/category/academic",
             color: "bg-indigo-500",
         },
         {
@@ -124,7 +124,7 @@ export default function SchoolInfoPage() {
             items: lang
                 ? ["পরীক্ষার নিয়মাবলী", "পরীক্ষার সময়সূচী", "সিলেবাস", "পাঠ পরিক্রমা"]
                 : ["Exam Rules", "Exam Schedule", "Syllabus", "Lesson Tour"],
-            link: "",
+            link: "/category/examination",
             color: "bg-teal-500",
         },
         {
@@ -134,7 +134,7 @@ export default function SchoolInfoPage() {
             items: lang
                 ? ["অভ্যন্তরীণ ফলাফল", "বার্ষিক পরীক্ষা ফলাফল", "বৃত্তি পরীক্ষা ফলাফল"]
                 : ["Internal Results", "Annual Exam Results", "Scholarship Exam Results"],
-            link: "",
+            link: "/category/result",
             color: "bg-cyan-500",
         },
         {
@@ -144,7 +144,7 @@ export default function SchoolInfoPage() {
             items: lang
                 ? ["ফটো গ্যালারি", "ভিডিও গ্যালারি", "ম্যাগাজিন"]
                 : ["Photo Gallery", "Video Gallery", "Magazine"],
-            link: "",
+            link: "/category/gallery",
             color: "bg-yellow-500",
         },
         {
@@ -154,7 +154,7 @@ export default function SchoolInfoPage() {
             items: lang
                 ? ["শিক্ষা সফর", "ক্রীড়া কার্যক্রম", "সাংস্কৃতিক কার্যক্রম", "স্কাউটস"]
                 : ["Study Tours", "Sports Activities", "Cultural Activities", "Scouts"],
-            link: "",
+            link: "/category/others",
             color: "bg-gray-600",
         },
     ];
