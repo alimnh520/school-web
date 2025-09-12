@@ -9,7 +9,7 @@ import Footer from "./layout/Footer";
 const page = () => {
 
   return (
-    <div className='mx-auto flex flex-col w-10/12 gap-y-5 bg-white px-4 pt-4'>
+    <div className='mx-auto flex flex-col sm:w-10/12 w-full gap-y-5 bg-white sm:px-4 pt-4'>
       <Animation />
       <SchoolSections />
       <NoticeAndLinks />

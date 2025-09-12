@@ -1,6 +1,6 @@
 'use client'
 import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -15,37 +15,55 @@ const Animation = () => {
     const handleAnimate = () => {
         setAnimKey((prev) => prev + 1);
     };
+
     return (
-        <Swiper
-            pagination={{
-                dynamicBullets: true,
-            }}
-            navigation={{
-                nextEl: '.button-next',
-                prevEl: '.button-prev',
-            }}
-            autoplay={true}
-            onSlideChange={() => setAnimKey((prev) => prev + 1)}
-            mousewheel={true}
-            modules={[Pagination, Navigation, Mousewheel, Autoplay]}
-            className="mySwiper h-96 w-full border"
-        >
-            <SwiperSlide className="bg-[url('/bg/543359019_2306187366479674_2760109373113052233_n.jpg')] bg-cover bg-center" key={animKey + "-1"}>
-                <p className="text-white animation mt-20 ml-10 text-2xl font-semibold">{lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}</p>
-            </SwiperSlide>
-            <SwiperSlide className="bg-[url('/bg/543359019_2306187366479674_2760109373113052233_n.jpg')] bg-cover bg-center" key={animKey + "-2"}>
-                <p className="text-white animation mt-20 ml-10 text-2xl font-semibold">{lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}</p>
-            </SwiperSlide>
-            <SwiperSlide className="bg-[url('/bg/543359019_2306187366479674_2760109373113052233_n.jpg')] bg-cover bg-center" key={animKey + "-3"}>
-                <p className="text-white animation mt-20 ml-10 text-2xl font-semibold">{lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}</p>
-            </SwiperSlide>
-            <SwiperSlide className="bg-[url('/bg/543359019_2306187366479674_2760109373113052233_n.jpg')] bg-cover bg-center" key={animKey + "-4"}>
-                <p className="text-white animation mt-20 ml-10 text-2xl font-semibold">{lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}</p>
-            </SwiperSlide>
-            <div className="button-next" onClick={handleAnimate} ><CiCircleChevRight /></div>
-            <div className="button-prev" onClick={handleAnimate} ><CiCircleChevLeft /></div>
-        </Swiper>
+        <div className="relative w-full">
+            <Swiper
+                pagination={{
+                    dynamicBullets: true,
+                }}
+                navigation={{
+                    nextEl: '.button-next',
+                    prevEl: '.button-prev',
+                }}
+                autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                }}
+                onSlideChange={() => setAnimKey((prev) => prev + 1)}
+                mousewheel={true}
+                modules={[Pagination, Navigation, Mousewheel, Autoplay]}
+                className="mySwiper h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] w-full"
+            >
+                {["-1", "-2", "-3", "-4"].map((item, idx) => (
+                    <SwiperSlide
+                        key={animKey + item}
+                        className="bg-[url('/bg/543359019_2306187366479674_2760109373113052233_n.jpg')] bg-cover bg-center relative"
+                    >
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                            <p className="text-white animation text-lg sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-center px-4">
+                                {lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}
+                            </p>
+                        </div>
+                    </SwiperSlide>
+                ))}
+
+                {/* Navigation buttons */}
+                <div
+                    className="button-next absolute top-1/2 right-3 transform -translate-y-1/2 text-white text-3xl sm:text-4xl cursor-pointer z-10 hover:scale-110 transition"
+                    onClick={handleAnimate}
+                >
+                    <CiCircleChevRight />
+                </div>
+                <div
+                    className="button-prev absolute top-1/2 left-3 transform -translate-y-1/2 text-white text-3xl sm:text-4xl cursor-pointer z-10 hover:scale-110 transition"
+                    onClick={handleAnimate}
+                >
+                    <CiCircleChevLeft />
+                </div>
+            </Swiper>
+        </div>
     )
 }
 
-export default Animation
+export default Animation;
