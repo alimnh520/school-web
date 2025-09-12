@@ -50,13 +50,13 @@ const Animation = () => {
 
                 {/* Navigation buttons */}
                 <div
-                    className="button-next absolute top-1/2 right-3 transform -translate-y-1/2 text-white text-3xl sm:text-4xl cursor-pointer z-10 hover:scale-110 transition"
+                    className="button-next absolute top-1/2 right-2 transform -translate-y-1/2 text-white text-3xl sm:text-4xl cursor-pointer z-10 hover:scale-110 transition"
                     onClick={handleAnimate}
                 >
                     <CiCircleChevRight />
                 </div>
                 <div
-                    className="button-prev absolute top-1/2 left-3 transform -translate-y-1/2 text-white text-3xl sm:text-4xl cursor-pointer z-10 hover:scale-110 transition"
+                    className="button-prev absolute top-1/2 left-2 transform -translate-y-1/2 text-white text-3xl sm:text-4xl cursor-pointer z-10 hover:scale-110 transition"
                     onClick={handleAnimate}
                 >
                     <CiCircleChevLeft />

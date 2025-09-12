@@ -173,7 +173,7 @@ export default function SchoolInfoPage() {
                         <CardTitle className="text-sm sm:text-base">{section.title}</CardTitle>
                     </CardHeader>
 
-                    <CardContent className="p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                    <CardContent className="p-4 flex sm:flex-row items-start sm:items-center gap-3">
                         <img
                             src={section.image}
                             alt=""

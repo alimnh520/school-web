@@ -12,9 +12,9 @@ export default function Header() {
     return (
         <header className="shadow-md uppercase">
             {/* Top Bar */}
-            <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white text-sm py-1 px-4 flex items-center justify-between">
+            <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white text-sm py-1 px-4 hidden items-center justify-between sm:flex">
                 <div className="font-semibold tracking-wide text-sm">
-                    {lang ? "সুর্বর্ণজয়ন্তী ও বঙ্গবন্ধু কর্নার" : "Bangabandhu Corner"}
+                    {lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}
                 </div>
 
                 {/* top actions - hide some on very small screens */}
@@ -58,13 +58,18 @@ export default function Header() {
             {/* Main Nav */}
             <nav className="bg-white px-4 sm:px-6 py-1 flex items-center justify-between">
                 {/* Logo & Title */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                     <img
                         src="/logos/logo01.png"
                         alt="School Logo"
                         className="h-12 w-12 rounded-full border border-gray-200 shadow"
                     />
-                    
+
+                    <div className="flex flex-col">
+                        <p className="text-sm">{lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}</p>
+                        <p className="text-[9px]">{lang && "Bihigram Government Primary School"}</p>
+                    </div>
+
                 </div>
 
                 {/* Desktop Menu */}
