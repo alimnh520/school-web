@@ -50,7 +50,7 @@
 }
 
 body {
-  font-family: 'Bornomala', sans-serif;
+  font-family: "Bornomala", sans-serif;
 }
 
 .button-next,
@@ -67,7 +67,7 @@ body {
   align-items: center;
 }
 .button-next:hover,
-.button-prev:hover{
+.button-prev:hover {
   color: rgb(255, 255, 255);
   transition: all;
   transition-duration: 0.3s;
@@ -170,5 +170,22 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
   }
 }

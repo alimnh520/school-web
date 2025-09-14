@@ -22,7 +22,7 @@ export default function Header() {
                 {/* top actions - hide some on very small screens */}
                 <div className="flex items-center space-x-3 text-sm">
                     <div className="hidden sm:flex items-center space-x-3">
-                        <Link href="#" onClick={() => setOpen(false)} className="hover:underline">
+                        <Link href="/category/admission-form" onClick={() => setOpen(false)} className="hover:underline">
                             {lang ? "ভর্তি ফরম" : "Admission"}
                         </Link>
                         <span className="text-white/60 hidden sm:inline">|</span>
@@ -32,11 +32,11 @@ export default function Header() {
                         <span className="text-white/60 hidden sm:inline">|</span>
                         {
                             info ? (
-                                <Link href="#" onClick={() => setOpen(false)} className="hover:underline">
+                                <Link href="/dashboard" onClick={() => setOpen(false)} className="hover:underline">
                                     {lang ? "ওয়েবসাইট ড্যাশবোর্ড" : "Dashboard"}
                                 </Link>
                             ) : (
-                                <Link href="#" onClick={() => setOpen(false)} className="hover:underline">
+                                <Link href="/login" onClick={() => setOpen(false)} className="hover:underline">
                                     {lang ? "প্রতিষ্ঠান লগইন" : "Institution Login"}
                                 </Link>
                             )
@@ -128,7 +128,7 @@ export default function Header() {
                 <div className="px-4 py-4 space-y-3">
                     {/* replicated top quick links for mobile */}
                     <div className="flex flex-wrap gap-2">
-                        <Link href="#" onClick={() => setOpen(false)} className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
+                        <Link href="/category/admission-form" onClick={() => setOpen(false)} className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
                             {lang ? "ভর্তি ফরম" : "Admission"}
                         </Link>
                         <Link href="/category/result" onClick={() => setOpen(false)} className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
@@ -136,11 +136,11 @@ export default function Header() {
                         </Link>
                         {
                             info ? (
-                                <Link href="#" onClick={() => setOpen(false)} className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
+                                <Link href="/dashboard" onClick={() => setOpen(false)} className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
                                     {lang ? "ওয়েবসাইট ড্যাশবোর্ড" : "website dashboard"}
                                 </Link>
                             ) : (
-                                <Link href="#" onClick={() => setOpen(false)} className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
+                                <Link href="/login" onClick={() => setOpen(false)} className="px-3 py-1 text-sm rounded bg-green-50 hover:bg-green-100">
                                     {lang ? "প্রতিষ্ঠান লগইন" : "Institution Login"}
                                 </Link>
                             )
