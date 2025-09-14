@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "@/app/Provider";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdOutlineSecurity, MdChildCare } from "react-icons/md";
@@ -7,6 +7,10 @@ import { GiPoliceOfficerHead } from "react-icons/gi";
 
 export default function ImportantNumbersPage() {
     const { lang } = useContext(UserContext);
+
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || গুরুত্বপূর্ণ নাম্বার"
+    }, []);
 
     const numbers = [
         {

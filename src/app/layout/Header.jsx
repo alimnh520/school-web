@@ -68,9 +68,9 @@ export default function Header() {
             {/* Main Nav */}
             <nav className="bg-white px-4 sm:px-6 py-1 flex items-center justify-between">
                 {/* Logo & Title */}
-                <div className="flex items-center gap-2">
+                <Link href="/" className="flex items-center gap-2">
                     <img
-                        src="/logos/logo01.png"
+                        src="/logos/547777440_668007619127256_3503730407665985454_n.png"
                         alt="School Logo"
                         className="h-12 w-12 rounded-full border border-gray-200 shadow"
                     />
@@ -80,7 +80,7 @@ export default function Header() {
                         <p className="text-[9px]">{lang && "Bihigram Government Primary School"}</p>
                     </div>
 
-                </div>
+                </Link>
 
                 {/* Desktop Menu */}
                 <ul className="hidden md:flex text-sm space-x-6 font-medium text-gray-700">

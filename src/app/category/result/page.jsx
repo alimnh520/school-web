@@ -1,11 +1,16 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "@/app/Provider";
 import { FaTrophy, FaMedal, FaChartLine } from "react-icons/fa";
 import { MdSchool } from "react-icons/md";
 
 export default function ResultPage() {
     const { lang } = useContext(UserContext);
+
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || ফলাফল"
+    }, []);
+
 
     const resultSections = [
         {

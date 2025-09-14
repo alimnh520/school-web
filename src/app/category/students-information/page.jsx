@@ -1,10 +1,15 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "@/app/Provider";
 import { FaUsers, FaPray, FaAward, FaHome } from "react-icons/fa";
 
 export default function StudentInfoPage() {
     const { lang } = useContext(UserContext);
+    
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || ছাত্র/ছাত্রী তথ্য"
+    }, []);
+
 
     const studentInfo = [
         {

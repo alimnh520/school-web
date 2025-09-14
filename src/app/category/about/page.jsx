@@ -1,13 +1,17 @@
 // app/about/page.tsx
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 export default function AboutPage() {
     const [form, setForm] = useState({ name: "", email: "", message: "" });
-    const [status, setStatus] = useState (
+    const [status, setStatus] = useState(
         "idle"
     );
+
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || আমাদের সম্পর্কে"
+    }, []);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });

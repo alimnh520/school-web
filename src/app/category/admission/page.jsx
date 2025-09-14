@@ -1,9 +1,14 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "@/app/Provider";
 
 export default function AdmissionPage() {
     const { lang } = useContext(UserContext);
+
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || ভর্তি সংক্রান্ত তথ্য"
+    }, []);
+
 
     const admissionInfo = [
         {

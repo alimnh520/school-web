@@ -1,9 +1,13 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "@/app/Provider";
 
 export default function TeachersAndStaffPage() {
     const { lang } = useContext(UserContext);
+
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || শিক্ষক এবং কর্মচারী"
+    }, []);
 
     return (
         <main className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen py-10 px-4">

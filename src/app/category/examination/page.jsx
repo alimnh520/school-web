@@ -1,10 +1,15 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "@/app/Provider";
 import { FaBookOpen, FaCalendarAlt, FaFileAlt, FaClipboardList } from "react-icons/fa";
 
 export default function ExamInfoPage() {
     const { lang } = useContext(UserContext);
+
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || পরীক্ষা সংক্রান্ত তথ্য"
+    }, []);
+
 
     const examInfo = [
         {

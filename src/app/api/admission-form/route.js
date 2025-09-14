@@ -3,6 +3,8 @@ import { getCollection } from "@/lib/mongoClient"; // তোমার MongoDB he
 import { connectDB } from "@/lib/connectDb";
 import admissionForm from "@/model/admissionForm";
 import { UploadImage } from "@/cloudinary/cloudUpload";
+import { ObjectId } from "mongodb";
+import cloudinary from "@/cloudinary/cloudConfig";
 
 export async function POST(request) {
     try {
@@ -79,10 +81,54 @@ export async function POST(request) {
 // GET – সব ডাটা পাওয়া
 export async function GET() {
     try {
-        const collection = await getCollection("admissions");
-        const students = await collection.find().toArray();
+        const collection = await getCollection("admissionforms");
+        const students = await collection.find({}).toArray();
 
-        return NextResponse.json({ success: true, data: students });
+        return NextResponse.json({ success: true, message: students });
+    } catch (error) {
+        console.error("Fetch Admission Data Error:", error);
+        return NextResponse.json({ success: false, message: "ডাটা আনা যায়নি!" }, { status: 500 });
+    }
+}
+
+export async function DELETE(request) {
+    try {
+        const { id, photo_id, document_id, dc_type } = await request.json();
+
+        const files = [
+            { id: photo_id, type: "image" },
+            { id: document_id, type: dc_type },
+        ];
+
+        for (const file of files) {
+            if (file.id) {
+                await cloudinary.uploader.destroy(file.id, {
+                    resource_type: file.type,
+                });
+            }
+        }
+
+        const collection = await getCollection("admissionforms");
+        await collection.deleteOne({ _id: new ObjectId(id) });
+
+        return NextResponse.json({ success: true, message: 'ডাটা মুছে ফেলা হয়েছে' });
+    } catch (error) {
+        console.error("Fetch Admission Data Error:", error);
+        return NextResponse.json({ success: false, message: "ডাটা আনা যায়নি!" }, { status: 500 });
+    }
+}
+
+export async function PUT(request) {
+    try {
+        const { id } = await request.json();
+        const collection = await getCollection("admissionforms");
+        await collection.findOneAndUpdate(
+            { _id: new ObjectId(id) },
+            { $set: { status: "accepted" } },
+        );
+
+        return NextResponse.json({ success: true, message: 'আবেদন গৃহীত হয়েছে' });
+
     } catch (error) {
         console.error("Fetch Admission Data Error:", error);
         return NextResponse.json({ success: false, message: "ডাটা আনা যায়নি!" }, { status: 500 });

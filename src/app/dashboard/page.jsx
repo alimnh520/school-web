@@ -66,6 +66,7 @@ export default function SchoolDashboard() {
         if (activeBtn) {
             setActive(activeBtn);
         }
+        document.title = "বি,স,প্রা,বি || ড্যাসবোর্ড"
     }, []);
 
     useEffect(() => {
@@ -211,16 +212,14 @@ export default function SchoolDashboard() {
                                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border flex flex-col items-center justify-center">
                                         <h3 className="text-sm text-gray-600 mb-3">ছাত্র/ছাত্রীর অনুপাত</h3>
                                         <div style={{ width: 160, height: 160 }}>
-                                            <ResponsiveContainer width={160} height={160}>
-                                                <PieChart>
-                                                    <Pie data={pieData} dataKey="value" innerRadius={30} outerRadius={60} paddingAngle={2}>
-                                                        {pieData.map((entry, index) => (
-                                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                                        ))}
-                                                    </Pie>
-                                                    <Tooltip />
-                                                </PieChart>
-                                            </ResponsiveContainer>
+                                            <PieChart>
+                                                <Pie data={pieData} dataKey="value" innerRadius={30} outerRadius={60} paddingAngle={2}>
+                                                    {pieData.map((entry, index) => (
+                                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                    ))}
+                                                </Pie>
+                                                <Tooltip />
+                                            </PieChart>
                                         </div>
                                     </div>
                                 </div>
@@ -306,7 +305,7 @@ export default function SchoolDashboard() {
                         )
                     }
                     {active === "admission-form" && (
-                        <AdmissionDashboard dark={dark}/>
+                        <AdmissionDashboard dark={dark} />
                     )}
                 </div>
             </div>

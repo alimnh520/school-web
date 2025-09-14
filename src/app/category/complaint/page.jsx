@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Complaint() {
     const [formData, setFormData] = useState({
@@ -8,6 +8,10 @@ export default function Complaint() {
         subject: "",
         message: "",
     });
+
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || অভিযোগ বাক্স"
+    }, []);
 
     const [submitted, setSubmitted] = useState(false);
 

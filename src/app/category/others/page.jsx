@@ -1,10 +1,14 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "@/app/Provider";
 import { FaBusAlt, FaFutbol, FaTheaterMasks, FaUserFriends } from "react-icons/fa";
 
 export default function OthersPage() {
     const { lang } = useContext(UserContext);
+
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || অন্যান্য কার্যক্রম"
+    }, []);
 
     const activities = [
         {

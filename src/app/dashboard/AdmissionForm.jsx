@@ -1,45 +1,77 @@
 "use client";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "@/app/Provider";
 import { Check, X } from "lucide-react";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { Loader2, Trash2 } from "lucide-react";
 
 export default function AdmissionDashboard({ dark }) {
     const { lang } = useContext(UserContext);
+    const [reCall, setRecall] = useState(0);
+    const [students, setStudents] = useState('');
 
-    // ডেমো ডাটা
-    const [students, setStudents] = useState([
-        {
-            id: 1,
-            name: "Rahim Uddin",
-            class: "৫ম",
-            father: "Karim Uddin",
-            phone: "01712345678",
-            status: "pending",
-        },
-        {
-            id: 2,
-            name: "Fatema Khatun",
-            class: "৪র্থ",
-            father: "Abdul Haque",
-            phone: "01812345678",
-            status: "pending",
-        },
-        {
-            id: 3,
-            name: "Hasan Ali",
-            class: "৩য়",
-            father: "Nurul Islam",
-            phone: "01912345678",
-            status: "pending",
-        },
-    ]);
+    const [acceptLoadingId, setAcceptLoadingId] = useState(null);
+    const [deleteLoadingId, setDeleteLoadingId] = useState(null);
 
-    const handleStatus = (id, status) => {
-        setStudents(
-            students.map((s) => (s.id === id ? { ...s, status: status } : s))
-        );
+    const handleAccept = async (id) => {
+        setAcceptLoadingId(id);
+        try {
+            const res = await fetch('/api/admission-form', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            const data = await res.json();
+            toast.success(data.message, { position: "bottom-right" });
+            if (data.success) setRecall((prev) => prev + 1);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setAcceptLoadingId(null);
+        }
     };
+
+    const handleDelete = async (elem) => {
+        setDeleteLoadingId(elem._id);
+        const photo_id = elem.student.photo_id;
+        const document_id = elem.others.url_id;
+        try {
+            const res = await fetch('/api/admission-form', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: elem._id,
+                    photo_id,
+                    document_id,
+                    dc_type: elem.others.file_type
+                })
+            });
+            const data = await res.json();
+            toast.success(data.message, { position: "bottom-right" });
+            if (data.success) setRecall((prev) => prev + 1);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setDeleteLoadingId(null);
+        }
+    };
+
+
+    useEffect(() => {
+        const admissionData = async () => {
+            try {
+                const res = await fetch('/api/admission-form', { method: 'GET' });
+                const data = await res.json();
+                if (data.success) setStudents(data.message);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        admissionData();
+    }, [reCall]);
 
     return (
         <main
@@ -55,7 +87,7 @@ export default function AdmissionDashboard({ dark }) {
                     <table className="w-full border-collapse rounded-lg shadow">
                         <thead>
                             <tr className="bg-blue-600 dark:bg-blue-700 text-white text-left">
-                                <th className="p-3">{lang ? "আইডি" : "ID"}</th>
+                                <th className="p-3">{lang ? "ক্রমিক নং" : "ID"}</th>
                                 <th className="p-3">{lang ? "শিক্ষার্থীর নাম" : "Name"}</th>
                                 <th className="p-3">{lang ? "ক্লাস" : "Class"}</th>
                                 <th className="p-3">{lang ? "পিতার নাম" : "Father's Name"}</th>
@@ -66,60 +98,92 @@ export default function AdmissionDashboard({ dark }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {students.map((student) => (
+                            {students && students.length > 0 ? (students.slice().reverse().map((elem, index) => (
                                 <tr
-                                    key={student.id}
+                                    key={elem._id}
                                     className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
                                 >
-                                    <td className="p-3">{student.id}</td>
-                                    <td className="p-3 font-semibold">{student.name}</td>
-                                    <td className="p-3">{student.class}</td>
-                                    <td className="p-3">{student.father}</td>
-                                    <td className="p-3">{student.phone}</td>
+                                    <td className="p-3">{index + 1}</td>
+                                    <td className="p-3 font-semibold">{elem.student.nameBn}</td>
+                                    <td className="p-3">{elem.student.class}</td>
+                                    <td className="p-3">{elem.father.nameBn}</td>
+                                    <td className="p-3">{elem.student.mobile}</td>
                                     <td className="p-3">
                                         <Link
-                                            href={`/dashboard/${student.id}`}
+                                            href={`/dashboard/${elem._id}`}
                                             className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition inline-flex items-center gap-1"
                                         >
                                             {lang ? "দেখুন" : "See"}
                                         </Link>
                                     </td>
                                     <td className="p-3">
-                                        {student.status === "pending" && (
+                                        {elem?.status === "pending" && (
                                             <span className="px-3 py-1 rounded-full text-sm bg-yellow-100 dark:bg-yellow-700 text-yellow-800 dark:text-yellow-100">
                                                 {lang ? "অপেক্ষমান" : "Pending"}
                                             </span>
                                         )}
-                                        {student.status === "accepted" && (
+                                        {elem?.status === "accepted" && (
                                             <span className="px-3 py-1 rounded-full text-sm bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-100">
                                                 {lang ? "গৃহীত" : "Accepted"}
                                             </span>
                                         )}
-                                        {student.status === "rejected" && (
-                                            <span className="px-3 py-1 rounded-full text-sm bg-red-100 dark:bg-red-700 text-red-800 dark:text-red-100">
-                                                {lang ? "প্রত্যাখ্যাত" : "Rejected"}
+                                    </td>
+                                    <td className="p-3 text-center space-x-2">
+                                        {elem?.status === "pending" && (
+                                            <>
+                                                {/* Accept Button */}
+                                                <button
+                                                    onClick={() => handleAccept(elem._id)}
+                                                    className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition inline-flex items-center gap-1"
+                                                >
+                                                    {acceptLoadingId === elem._id ? (
+                                                        <>
+                                                            <Loader2 className="animate-spin" size={18} /> গ্রহণ হচ্ছে...
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <Check size={16} /> {lang ? "গ্রহণ" : "Accept"}
+                                                        </>
+                                                    )}
+                                                </button>
+
+                                                {/* Delete Button */}
+                                                <button
+                                                    onClick={() => handleDelete(elem)}
+                                                    className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition inline-flex items-center gap-1"
+                                                >
+                                                    {deleteLoadingId === elem._id ? (
+                                                        <>
+                                                            <Loader2 className="animate-spin" size={18} /> মুছে ফেলা হচ্ছে...
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <X size={16} /> {lang ? "প্রত্যাখ্যান" : "Reject"}
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </>
+                                        )}
+
+                                        {elem?.status === "accepted" && (
+                                            <span className="px-3 py-1 rounded-lg text-sm bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-100">
+                                                ✅ {lang ? "গৃহীত হয়েছে" : "Admission Confirmed"}
                                             </span>
                                         )}
                                     </td>
-                                    <td className="p-3 text-center space-x-2">
-                                        <button
-                                            onClick={() => handleStatus(student.id, "accepted")}
-                                            className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition inline-flex items-center gap-1"
-                                        >
-                                            <Check size={16} /> {lang ? "গ্রহণ" : "Accept"}
-                                        </button>
-                                        <button
-                                            onClick={() => handleStatus(student.id, "rejected")}
-                                            className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition inline-flex items-center gap-1"
-                                        >
-                                            <X size={16} /> {lang ? "প্রত্যাখ্যান" : "Reject"}
-                                        </button>
+
+                                </tr>
+                            ))) : (
+                                <tr>
+                                    <td colSpan={8} className="text-center p-3">
+                                        {lang ? "কোনো তথ্য নেই" : "No data"}
                                     </td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>
+                <ToastContainer />
             </div>
         </main>
     );

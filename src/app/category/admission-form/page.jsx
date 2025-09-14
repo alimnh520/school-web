@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +8,10 @@ import { ToastContainer } from "react-toastify";
 export default function Home() {
     const [formData, setFormData] = useState({});
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || ভর্তি ফরম"
+    }, []);
 
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;

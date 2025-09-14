@@ -1,10 +1,14 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "@/app/Provider";
 import { FaPhotoVideo, FaImages, FaBookOpen } from "react-icons/fa";
 
 export default function GalleryPage() {
     const { lang } = useContext(UserContext);
+
+    useEffect(() => {
+        document.title = "বি,স,প্রা,বি || গ্যালারী"
+    }, []);
 
     const gallerySections = [
         {

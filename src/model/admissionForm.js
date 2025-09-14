@@ -107,6 +107,7 @@ const admissionFormSchema = new mongoose.Schema({
         url_id: String,
         file_type: String,
     },
+    status: { type: String, default: 'pending' }
 
 }, { timestamps: true });
 
