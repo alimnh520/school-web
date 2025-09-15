@@ -167,3 +167,148 @@ export default function ResultPage() {
         </main>
     );
 }
+
+
+// "use client";
+
+// import { useState } from "react";
+
+// const classes = ["ক্লাস ৫", "ক্লাস ৬", "ক্লাস ৭", "ক্লাস ৮", "ক্লাস ৯", "ক্লাস ১০"];
+
+// const examResults = {
+//   "ক্লাস ৫": {
+//     "প্রথম সাময়িক": [
+//       { roll: 1, name: "রাকিব", subject: "বাংলা", marks: 85, grade: "A" },
+//       { roll: 2, name: "মাহি", subject: "গণিত", marks: 90, grade: "A+" },
+//     ],
+//     "দ্বিতীয় সাময়িক": [
+//       { roll: 1, name: "রাকিব", subject: "ইংরেজি", marks: 78, grade: "B+" },
+//     ],
+//     "বার্ষিক": [
+//       { roll: 2, name: "মাহি", subject: "বিজ্ঞান", marks: 88, grade: "A" },
+//     ],
+//   },
+//   "ক্লাস ৬": {
+//     "প্রথম সাময়িক": [
+//       { roll: 5, name: "সুমন", subject: "বাংলা", marks: 80, grade: "A" },
+//     ],
+//     "দ্বিতীয় সাময়িক": [],
+//     "বার্ষিক": [],
+//   },
+//   // অন্যান্য ক্লাস এভাবেই...
+// };
+
+// export default function ResultsPage() {
+//   const [selectedClass, setSelectedClass] = useState(null);
+//   const [selectedExam, setSelectedExam] = useState("প্রথম সাময়িক");
+//   const [searchRoll, setSearchRoll] = useState("");
+
+//   const results =
+//     selectedClass && examResults[selectedClass]
+//       ? examResults[selectedClass][selectedExam].filter(
+//           (r) => !searchRoll || r.roll.toString() === searchRoll
+//         )
+//       : [];
+
+//   return (
+//     <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 py-10 px-4">
+//       <div className="max-w-6xl mx-auto">
+//         {/* Header */}
+//         <header className="text-center mb-10">
+//           <h1 className="text-3xl font-bold text-blue-400">🎓 পরীক্ষার ফলাফল</h1>
+//           <p className="text-gray-300 mt-2">
+//             এখানে ক্লাসভিত্তিক ও রোল নাম্বার অনুযায়ী ফলাফল দেখা যাবে।
+//           </p>
+//         </header>
+
+//         {/* Class Tabs */}
+//         <div className="flex flex-wrap gap-3 justify-center mb-8">
+//           {classes.map((cls) => (
+//             <button
+//               key={cls}
+//               onClick={() => setSelectedClass(cls)}
+//               className={`px-5 py-2 rounded-lg font-medium transition ${
+//                 selectedClass === cls
+//                   ? "bg-blue-600 text-white"
+//                   : "bg-gray-700 hover:bg-gray-600"
+//               }`}
+//             >
+//               {cls}
+//             </button>
+//           ))}
+//         </div>
+
+//         {/* Exam Tabs */}
+//         {selectedClass && (
+//           <div className="flex gap-3 justify-center mb-6">
+//             {["প্রথম সাময়িক", "দ্বিতীয় সাময়িক", "বার্ষিক"].map((exam) => (
+//               <button
+//                 key={exam}
+//                 onClick={() => setSelectedExam(exam)}
+//                 className={`px-4 py-2 rounded-lg font-medium transition ${
+//                   selectedExam === exam
+//                     ? "bg-green-600 text-white"
+//                     : "bg-gray-700 hover:bg-gray-600"
+//                 }`}
+//               >
+//                 {exam}
+//               </button>
+//             ))}
+//           </div>
+//         )}
+
+//         {/* Search */}
+//         {selectedClass && (
+//           <div className="flex justify-center mb-6">
+//             <input
+//               type="number"
+//               placeholder="রোল নাম্বার দিয়ে খুঁজুন..."
+//               className="p-2 w-64 rounded-lg bg-gray-700 border border-gray-600 text-white"
+//               value={searchRoll}
+//               onChange={(e) => setSearchRoll(e.target.value)}
+//             />
+//           </div>
+//         )}
+
+//         {/* Results Table */}
+//         <div className="bg-gray-800 rounded-xl shadow-lg overflow-x-auto">
+//           {results.length > 0 ? (
+//             <table className="min-w-full text-sm text-gray-200">
+//               <thead className="bg-gray-700 text-gray-100">
+//                 <tr>
+//                   <th className="px-4 py-2 border">রোল</th>
+//                   <th className="px-4 py-2 border">নাম</th>
+//                   <th className="px-4 py-2 border">বিষয়</th>
+//                   <th className="px-4 py-2 border">মার্কস</th>
+//                   <th className="px-4 py-2 border">গ্রেড</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {results.map((row, i) => (
+//                   <tr
+//                     key={i}
+//                     className="odd:bg-gray-800 even:bg-gray-700 hover:bg-gray-600 transition"
+//                   >
+//                     <td className="px-4 py-2 border">{row.roll}</td>
+//                     <td className="px-4 py-2 border">{row.name}</td>
+//                     <td className="px-4 py-2 border">{row.subject}</td>
+//                     <td className="px-4 py-2 border">{row.marks}</td>
+//                     <td className="px-4 py-2 border">{row.grade}</td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           ) : selectedClass ? (
+//             <p className="text-center text-gray-400 py-6">
+//               কোনো ফলাফল পাওয়া যায়নি।
+//             </p>
+//           ) : (
+//             <p className="text-center text-gray-400 py-6">
+//               আগে একটি ক্লাস নির্বাচন করুন।
+//             </p>
+//           )}
+//         </div>
+//       </div>
+//     </main>
+//   );
+// }

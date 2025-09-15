@@ -19,6 +19,8 @@ import {
 import AdmissionDashboard from "./AdmissionForm";
 import Main from "./Main";
 import Notifications from "./Notifications";
+import Result from "./Result";
+import ComplaintsPage from "./Complaint";
 
 const sidebarItems = [
     { key: "about", label: "প্রতিষ্ঠান সম্পর্কে", icon: Home },
@@ -26,7 +28,6 @@ const sidebarItems = [
     { key: "staff", label: "শিক্ষক এবং কর্মচারী", icon: Users },
     { key: "academic", label: "একাডেমিক তথ্য", icon: BookOpen },
     { key: "cocurr", label: "সহপাঠ্যক্রম", icon: Grid },
-    { key: "admission", label: "ভর্তি সংক্রান্ত তথ্য", icon: FileText },
     { key: "admission-form", label: "ভর্তি ফরম", icon: FileText },
     { key: "students", label: "ছাত্র/ছাত্রী তথ্য", icon: Users },
     { key: "exam", label: "পরীক্ষা সংক্রান্ত তথ্য", icon: ClipboardList },
@@ -185,6 +186,12 @@ export default function SchoolDashboard() {
                         }
                         {active === "admission-form" && (
                             <AdmissionDashboard dark={dark} />
+                        )}
+                        {active === "result" && (
+                            <Result dark={dark} />
+                        )}
+                        {active === "complaint" && (
+                            <ComplaintsPage dark={dark} active={active} />
                         )}
                     </div>
                 </div>

@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 
 export default function Complaint() {
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
-        email: "",
+        mobile: "",
         subject: "",
         message: "",
     });
@@ -19,12 +20,24 @@ export default function Complaint() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // এখানে তুমি API কল বা কোনো ব্যাকএন্ড লগিক যোগ করতে পারো
-        console.log("Complaint submitted:", formData);
-        setSubmitted(true);
-        setFormData({ name: "", email: "", subject: "", message: "" });
+        setLoading(true);
+        try {
+            const res = await fetch('/api/complaint', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ formData })
+            });
+            const data = await res.json();
+            if (data.success) setSubmitted(true);
+        } catch (error) {
+            toast.error("সার্ভারে সমস্যা!", { position: "top-center", autoClose: 500, });
+            console.error("Login Error:", error);
+        } finally {
+            setLoading(false);
+        }
+        setFormData({ name: "", mobile: "", subject: "", message: "" });
     };
 
     return (
@@ -56,11 +69,11 @@ export default function Complaint() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium mb-1">ইমেইল</label>
+                                <label className="block text-sm font-medium mb-1">মোবাইল</label>
                                 <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
+                                    type="mobile"
+                                    name="mobile"
+                                    value={formData.mobile}
                                     onChange={handleChange}
                                     className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
@@ -93,9 +106,35 @@ export default function Complaint() {
 
                             <button
                                 type="submit"
-                                className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800 transition-colors"
+                                className="w-full bg-blue-900 flex items-center justify-center text-white py-2 rounded-md hover:bg-blue-800 transition-colors"
                             >
-                                পাঠান
+                                {loading ? (
+                                    <div className="flex">
+                                        <svg
+                                            className="animate-spin h-5 w-5 text-white"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            ></circle>
+                                            <path
+                                                className="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"
+                                            ></path>
+                                        </svg>
+                                        লোড হচ্ছে...
+                                    </div>
+                                ) : (
+                                    "পাঠান"
+                                )}
                             </button>
                         </form>
                     )}
