@@ -21,7 +21,7 @@ const Provider = ({ children }) => {
 }, []);
 
 return (
-    <div className="sm:bg-[url('/bg/gray-squared-fur-texture.jpg')] bg-white bg-cover bg-center bg-fixed">
+    <div className="sm:bg-[url('/bg/544372848_648767351211900_7784106475620194371_n.png')] bg-white bg-cover bg-center bg-fixed">
         <UserContext.Provider value={{ lang, info, setLang }}>
             <Header />
             {children}

@@ -5,6 +5,7 @@ import admissionForm from "@/model/admissionForm";
 import { UploadImage } from "@/cloudinary/cloudUpload";
 import { ObjectId } from "mongodb";
 import cloudinary from "@/cloudinary/cloudConfig";
+import notification from "@/model/notification";
 
 export async function POST(request) {
     try {
@@ -24,7 +25,14 @@ export async function POST(request) {
             UploadImage(documentFile, documentsType, "admission"),
         ]);
 
+
+
         await connectDB();
+
+        const saveNotification = new notification({
+            title: '👨‍🎓 নতুন ভর্তি আবেদন!',
+        });
+        await saveNotification.save();
 
         const saveForm = new admissionForm({
             student: {

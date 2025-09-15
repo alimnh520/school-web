@@ -53,6 +53,10 @@ body {
   font-family: "Bornomala", sans-serif;
 }
 
+::-webkit-scrollbar{
+  display: none;
+}
+
 .button-next,
 .button-prev {
   position: absolute !important;

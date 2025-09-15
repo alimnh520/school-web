@@ -14,7 +14,7 @@ export default function Header() {
     return (
         <header className="shadow-md uppercase">
             {/* Top Bar */}
-            <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white text-sm py-1 px-4 hidden items-center justify-between sm:flex">
+            <div className={`bg-gradient-to-r from-green-600 to-blue-600 text-white text-sm py-1 px-4 hidden items-center justify-between ${path === '/dashboard' && 'sm:hidden'} sm:flex`}>
                 <div className="font-semibold tracking-wide text-sm">
                     {lang ? "বিহিগ্রাম সরকারি প্রাথমিক বিদ্যালয়" : "Bihigram Government Primary School"}
                 </div>
@@ -68,7 +68,7 @@ export default function Header() {
             {/* Main Nav */}
             <nav className="bg-white px-4 sm:px-6 py-1 flex items-center justify-between">
                 {/* Logo & Title */}
-                <Link href="/" className="flex items-center gap-2">
+                <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
                     <img
                         src="/logos/547777440_668007619127256_3503730407665985454_n.png"
                         alt="School Logo"

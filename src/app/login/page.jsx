@@ -62,7 +62,7 @@ export default function LoginPage() {
                         <form className="space-y-4" onSubmit={handleLogin}>
                             <div>
                                 <label className="text-sm font-medium text-gray-700">ইমেইল বা ইউজারনেম</label>
-                                <Input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="আপনার ইমেইল / ইউজারনেম লিখুন" className="mt-1" />
+                                <Input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="ইমেইল / ইউজারনেম লিখুন" className="mt-1" />
                             </div>
 
                             <div>
