@@ -51,12 +51,17 @@ const Notifications = ({ active }) => {
         <div className="relative">
             <button
                 title="Notifications"
-                className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${showNotification && 'bg-gray-200 dark:bg-gray-700'}`}
+                className={`p-2 rounded-full relative hover:bg-gray-100 dark:hover:bg-gray-700 ${showNotification && 'bg-gray-200 dark:bg-gray-700'}`}
                 onClick={() => {
                     setShowNotification(!showNotification);
                     handleRead();
                 }}
             >
+                {notifications && notifications?.filter(elem => elem.isRead === false)?.length > 0 &&
+                    (
+                        <p className='bg-red-600 text-white size-5 flex items-center justify-center rounded-full absolute -top-1 -right-1'>{notifications.filter(elem => elem.isRead === false)?.length}</p>
+                    )
+                }
                 <Bell className="w-5 h-5 text-gray-700 dark:text-gray-200" />
             </button>
 
