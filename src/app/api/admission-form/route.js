@@ -115,7 +115,7 @@ export async function DELETE(request) {
                 });
             }
         }
-
+        
         const collection = await getCollection("admissionforms");
         await collection.deleteOne({ _id: new ObjectId(id) });
 

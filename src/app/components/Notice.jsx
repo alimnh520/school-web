@@ -2,10 +2,25 @@
 import Marquee from "react-fast-marquee";
 import { Bell, Link as LinkIcon } from "lucide-react";
 import AboutInstitute from "./AboutSchool";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Provider";
 
 export default function NoticeAndLinks() {
+
+    const [notice, setNotice] = useState(null);
+    useEffect(() => {
+        const fetchNotice = async () => {
+            try {
+                const res = await fetch("/api/notice", { method: 'GET' });
+                const data = await res.json();
+                if (data.success) setNotice(data.message);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchNotice();
+    }, []);
+
     const { lang } = useContext(UserContext);
     const notices = [
         lang ? "ইউনিক আইডি" : "Unique ID",
@@ -35,9 +50,7 @@ export default function NoticeAndLinks() {
                     {/* Marquee */}
                     <div className="bg-blue-600 text-white py-2 mb-4 sm:rounded-lg">
                         <Marquee pauseOnHover={true} speed={60}>
-                            <span className="mx-8">Thank you for visiting our website ***</span>
-                            <span className="mx-8">*** Thank you for visiting our website ***</span>
-                            <span className="mx-8">আমাদের ওয়েবসাইটে আসার জন্য ধন্যবাদ 🥰</span>
+                            <span className="mx-8">{notice ? notice.title : ''}</span>
                         </Marquee>
                     </div>
 

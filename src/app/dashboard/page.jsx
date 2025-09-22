@@ -21,19 +21,18 @@ import Main from "./Main";
 import Notifications from "./Notifications";
 import Result from "./Result";
 import ComplaintsPage from "./Complaint";
+import GalleryUpload from "./Gallery";
+import StudentsInfo from "./StudentsInfo";
+import NoticesPage from "./Notice";
 
 const sidebarItems = [
     { key: "about", label: "প্রতিষ্ঠান সম্পর্কে", icon: Home },
-    { key: "admin", label: "প্রশাসনিক তথ্য", icon: Users },
-    { key: "staff", label: "শিক্ষক এবং কর্মচারী", icon: Users },
-    { key: "academic", label: "একাডেমিক তথ্য", icon: BookOpen },
-    { key: "cocurr", label: "সহপাঠ্যক্রম", icon: Grid },
     { key: "admission-form", label: "ভর্তি ফরম", icon: FileText },
     { key: "students", label: "ছাত্র/ছাত্রী তথ্য", icon: Users },
-    { key: "exam", label: "পরীক্ষা সংক্রান্ত তথ্য", icon: ClipboardList },
     { key: "result", label: "ফলাফল", icon: FileText },
     { key: "gallery", label: "গ্যালারী", icon: Camera },
     { key: "complaint", label: "অভিযোগ বাক্স", icon: MessageCircle },
+    { key: "notice", label: "নতুন নোটিশ", icon: Bell },
 ];
 
 const COLORS = ["#60A5FA", "#34D399"];
@@ -97,10 +96,6 @@ export default function SchoolDashboard() {
                             );
                         })}
                     </nav>
-
-                    <div className="px-4 py-4 border-t dark:border-gray-700">
-                        <button className="w-full px-3 py-2 rounded-md bg-green-600 text-white font-semibold">নতুন নোটিশ</button>
-                    </div>
                 </aside>
 
                 {/* Main content */}
@@ -192,6 +187,15 @@ export default function SchoolDashboard() {
                         )}
                         {active === "complaint" && (
                             <ComplaintsPage dark={dark} active={active} />
+                        )}
+                        {active === "gallery" && (
+                            <GalleryUpload dark={dark} active={active} />
+                        )}
+                        {active === "students" && (
+                            <StudentsInfo dark={dark} active={active} />
+                        )}
+                        {active === "notice" && (
+                            <NoticesPage dark={dark} active={active} />
                         )}
                     </div>
                 </div>

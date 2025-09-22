@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { GraduationCap, Users } from "lucide-react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const classes = [
     { id: 1, name: "প্রথম শ্রেণী" },
@@ -17,68 +20,85 @@ export default function Dashboard() {
     const [selectedClass, setSelectedClass] = useState(null);
     const [showForm, setShowForm] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState("Test");
-    const [formData, setFormData] = useState({
-        personalInfo: {
-            name_bn: "",
-            name_en: "",
-            class: "",
-            rollNumber: "",
-            section: "",
-        },
-        test: { bangla: "", english: "", math: "", science: "", religion: "", social: "", marksheet: null },
-        halfyearly: { bangla: "", english: "", math: "", science: "", religion: "", social: "", marksheet: null },
-        final: { bangla: "", english: "", math: "", science: "", religion: "", social: "", marksheet: null },
+    const [studentResult, setStudentResult] = useState([]);
+    const [marksYear, setMarksYear] = useState("");
+    const [personalInfo, setPersonalInfo] = useState({
+        name_bn: "",
+        name_en: "",
+        class_name: "",
+        rollNumber: "",
+        section: "",
+        year: "",
+        bangla: "",
+        english: "",
+        math: "",
+        science: "",
+        religion: "",
+        social: "",
     });
 
-    const activeKey = activeTab.toLowerCase();
+    // Fetch all student marks
+    useEffect(() => {
+        async function studentMarks() {
+            try {
+                const res = await fetch("/api/students-mark", { method: "GET" });
+                const data = await res.json();
+                if (data.success) setStudentResult(data.message);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        studentMarks();
+    }, []);
+    
+    const handleDelete = async (id) => {
+        setLoading(true);
+        try {
+            const res = await fetch("/api/students-mark", {
+                method: "DELETE",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            const data = await res.json();
+            toast.success(data.message, { position: "bottom-right" });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
-    const handleInputChange = (section, field, value) => {
-        setFormData((prev) => ({
-            ...prev,
-            [section]: { ...prev[section], [field]: value },
-        }));
-    };
-
-    const handleFileChange = (section, field, file) => {
-        setFormData((prev) => ({
-            ...prev,
-            [section]: { ...prev[section], [field]: file },
-        }));
+    const handleChange = (field, value) => {
+        setPersonalInfo((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            const formPayload = new FormData();
-
-            formPayload.append("data", JSON.stringify(formData));
-
-            if (formData.test.marksheet) formPayload.append("testMarkSheet", formData.test.marksheet);
-            if (formData.halfyearly.marksheet) formPayload.append("halfYearlyMarkSheet", formData.halfyearly.marksheet);
-            if (formData.final.marksheet) formPayload.append("finalMarkSheet", formData.final.marksheet);
-
             const res = await fetch("/api/students-mark", {
                 method: "POST",
-                body: formPayload,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(personalInfo),
             });
             const data = await res.json();
             if (data.success) {
                 setShowForm(false);
-                setFormData({
-                    personalInfo: {
-                        name_bn: "",
-                        name_en: "",
-                        class: "",
-                        rollNumber: "",
-                        section: "",
-                    },
-                    test: { bangla: "", english: "", math: "", science: "", religion: "", social: "", marksheet: null },
-                    halfyearly: { bangla: "", english: "", math: "", science: "", religion: "", social: "", marksheet: null },
-                    final: { bangla: "", english: "", math: "", science: "", religion: "", social: "", marksheet: null },
-                })
-            };
+                setPersonalInfo({
+                    name_bn: "",
+                    name_en: "",
+                    class_name: "",
+                    rollNumber: "",
+                    section: "",
+                    year: "",
+                    bangla: "",
+                    english: "",
+                    math: "",
+                    science: "",
+                    religion: "",
+                    social: "",
+                });
+            }
         } catch (error) {
             console.log(error);
         } finally {
@@ -119,26 +139,72 @@ export default function Dashboard() {
                 ))}
             </div>
 
-            {/* Add Student Button */}
-            {selectedClass && (
-                <div className="mt-4 text-right">
+            {/* Add Student Button + Year Filter */}
+            <div className="mt-4 flex items-center space-x-3 justify-end text-right">
+                <input
+                    type="number"
+                    placeholder="Year"
+                    value={marksYear}
+                    onChange={(e) => {
+                        const value = e.target.value.slice(0, 4);
+                        setMarksYear(value);
+                    }}
+                    className="p-2 w-20 rounded border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+                />
+
+                {selectedClass && (
                     <Button
-                        className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow"
+                        className="dark:bg-gray-700 h-10 text-gray-800 dark:text-gray-100 shadow"
                         onClick={() => {
                             setShowForm(true);
-                            setFormData((prev) => ({
+                            setPersonalInfo((prev) => ({
                                 ...prev,
-                                personalInfo: {
-                                    ...prev.personalInfo,
-                                    class: classes.find((c) => c.id === selectedClass)?.name,
-                                },
+                                class_name: classes.find((c) => c.id === selectedClass)?.name,
                             }));
                         }}
                     >
                         ➕ শিক্ষার্থী যোগ করুন
                     </Button>
-                </div>
-            )}
+                )}
+            </div>
+
+            {/* Student Results */}
+            <div className="w-full bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md min-h-[200px]">
+                {studentResult
+                    .filter(
+                        (elem) =>
+                            elem.year?.toString() === (marksYear || "2025") &&
+                            elem.class_name ===
+                            (classes.find((c) => c.id === selectedClass)?.name || "প্রথম শ্রেণী")
+                    )
+                    .sort((a, b) => a.rollNumber - b.rollNumber) // ✅ রোল নাম্বার অনুযায়ী সাজানো
+                    .map((mark) => (
+                        <div
+                            key={mark._id}
+                            className="p-4 mb-3 flex justify-between items-center rounded-lg border bg-gray-50 dark:bg-gray-700 shadow-sm"
+                        >
+                            <div>
+                                <p className="font-semibold text-gray-800 dark:text-gray-100">
+                                    নাম: {mark.name_bn} | রোল: {mark.rollNumber}
+                                </p>
+                                <p className="text-sm text-gray-600 dark:text-gray-300">
+                                    ক্লাস: {mark.class_name} | বছর: {mark.year}
+                                </p>
+                                <p className="text-sm text-gray-700 dark:text-gray-200">
+                                    বাংলা: {mark.bangla}, ইংরেজি: {mark.english}, গণিত: {mark.math},
+                                    বিজ্ঞান: {mark.science}, ধর্ম: {mark.religion}, সামাজিক: {mark.social}
+                                </p>
+                            </div>
+
+                            <button
+                                onClick={() => handleDelete(mark._id)}
+                                className="ml-4 px-3 py-1 text-sm bg-red-500 hover:bg-red-600 text-white rounded-lg shadow"
+                            >
+                                {loading ? 'লোডিং হচ্ছে':'❌ ডিলেট'}
+                            </button>
+                        </div>
+                    ))}
+            </div>
 
             {/* Form Modal */}
             <AnimatePresence>
@@ -162,96 +228,72 @@ export default function Dashboard() {
                             exit={{ scale: 0.9, opacity: 0 }}
                             className="relative bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl max-w-3xl w-full z-50"
                         >
-                            {/* Tabs */}
-                            <div className="flex gap-4 mb-4 border-b border-gray-300 dark:border-gray-600">
-                                {["Test", "HalfYearly", "Final"].map((tab) => (
-                                    <button
-                                        key={tab}
-                                        onClick={() => setActiveTab(tab)}
-                                        className={`px-4 py-2 rounded-t-lg font-semibold ${activeTab === tab
-                                            ? "bg-green-500 text-white"
-                                            : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
-                                            }`}
-                                    >
-                                        {tab}
-                                    </button>
-                                ))}
-                            </div>
-
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 {/* Personal Info */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <input
                                         type="text"
                                         placeholder="নাম (বাংলা)"
-                                        value={formData.personalInfo.name_bn}
-                                        onChange={(e) => handleInputChange("personalInfo", "name_bn", e.target.value)}
+                                        value={personalInfo.name_bn}
+                                        onChange={(e) => handleChange("name_bn", e.target.value)}
                                         className="p-2 rounded border dark:border-gray-600 w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
                                         required
                                     />
                                     <input
                                         type="text"
                                         placeholder="Name (English)"
-                                        value={formData.personalInfo.name_en}
-                                        onChange={(e) => handleInputChange("personalInfo", "name_en", e.target.value)}
+                                        value={personalInfo.name_en}
+                                        onChange={(e) => handleChange("name_en", e.target.value)}
                                         className="p-2 rounded border dark:border-gray-600 w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
                                         required
                                     />
                                     <input
                                         type="number"
                                         placeholder="Roll Number"
-                                        value={formData.personalInfo.rollNumber}
-                                        onChange={(e) => handleInputChange("personalInfo", "rollNumber", e.target.value)}
+                                        value={personalInfo.rollNumber}
+                                        onChange={(e) => handleChange("rollNumber", e.target.value)}
                                         className="p-2 rounded border dark:border-gray-600 w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
                                         required
                                     />
                                     <input
                                         type="text"
                                         placeholder="Section"
-                                        value={formData.personalInfo.section}
-                                        onChange={(e) => handleInputChange("personalInfo", "section", e.target.value)}
+                                        value={personalInfo.section}
+                                        onChange={(e) => handleChange("section", e.target.value)}
                                         className="p-2 rounded border dark:border-gray-600 w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
                                     />
                                     <input
                                         type="text"
                                         placeholder="Class"
-                                        value={formData.personalInfo.class}
+                                        value={personalInfo.class_name}
                                         disabled
                                         className="p-2 rounded border dark:border-gray-600 w-full bg-gray-200 dark:bg-gray-600 text-gray-500"
                                     />
+                                    <input
+                                        type="number"
+                                        placeholder="Year"
+                                        value={personalInfo.year}
+                                        onChange={(e) =>
+                                            handleChange("year", e.target.value.slice(0, 4))
+                                        }
+                                        className="p-2 rounded border dark:border-gray-600 w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+                                    />
                                 </div>
 
-                                {/* Active Tab Fields */}
+                                {/* Subject Marks */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {Object.entries(formData[activeKey]).map(([field, value]) => {
-                                        if (field === "marksheet") {
-                                            return (
-                                                <div key={field} className="flex flex-col">
-                                                    <label className="text-sm mb-1 text-gray-500">Marksheet Upload</label>
-                                                    <input
-                                                        type="file"
-                                                        accept=".pdf,image/*"
-                                                        onChange={(e) =>
-                                                            handleFileChange(activeKey, field, e.target.files[0])
-                                                        }
-                                                        className="p-2 rounded border dark:border-gray-600 w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
-                                                    />
-                                                </div>
-                                            );
-                                        }
-                                        return (
+                                    {["bangla", "english", "math", "science", "religion", "social"].map(
+                                        (field) => (
                                             <input
                                                 key={field}
-                                                type="text"
-                                                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                                                value={value}
-                                                onChange={(e) =>
-                                                    handleInputChange(activeKey, field, e.target.value)
-                                                }
+                                                type="number"
+                                                placeholder={`${field.toUpperCase()} Marks`}
+                                                value={personalInfo[field]}
+                                                onChange={(e) => handleChange(field, e.target.value)}
                                                 className="p-2 rounded border dark:border-gray-600 w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
                                             />
-                                        );
-                                    })}
+                                        )
+                                    )}
                                 </div>
 
                                 {/* Buttons */}
@@ -272,33 +314,7 @@ export default function Dashboard() {
                                             : "bg-green-500 hover:bg-green-600"
                                             } text-white flex items-center gap-2`}
                                     >
-                                        {loading ? (
-                                            <>
-                                                <svg
-                                                    className="animate-spin h-5 w-5 text-white"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <circle
-                                                        className="opacity-25"
-                                                        cx="12"
-                                                        cy="12"
-                                                        r="10"
-                                                        stroke="currentColor"
-                                                        strokeWidth="4"
-                                                    ></circle>
-                                                    <path
-                                                        className="opacity-75"
-                                                        fill="currentColor"
-                                                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                                                    ></path>
-                                                </svg>
-                                                Loading...
-                                            </>
-                                        ) : (
-                                            "✅ Submit"
-                                        )}
+                                        {loading ? "Loading..." : "✅ Submit"}
                                     </Button>
                                 </div>
                             </form>
@@ -306,6 +322,7 @@ export default function Dashboard() {
                     </motion.div>
                 )}
             </AnimatePresence>
+            <ToastContainer />
         </div>
     );
 }

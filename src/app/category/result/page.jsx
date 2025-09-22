@@ -1,314 +1,180 @@
 "use client";
-import React, { useContext, useEffect } from "react";
-import { UserContext } from "@/app/Provider";
-import { FaTrophy, FaMedal, FaChartLine } from "react-icons/fa";
-import { MdSchool } from "react-icons/md";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { GraduationCap, Users } from "lucide-react";
 
 export default function ResultPage() {
-    const { lang } = useContext(UserContext);
+    const [studentResult, setStudentResult] = useState([]);
+    const [selectedClass, setSelectedClass] = useState("প্রথম শ্রেণী"); // 🟢 ডিফল্ট
+    const [marksYear, setMarksYear] = useState("2025"); // 🟢 ডিফল্ট
+    const [searchRoll, setSearchRoll] = useState(""); // 🆕 রোল সার্চ
+    const [selectedStudent, setSelectedStudent] = useState(null);
 
-    useEffect(() => {
-        document.title = "বি,স,প্রা,বি || ফলাফল"
-    }, []);
-
-
-    const resultSections = [
-        {
-            titleBn: "অভ্যন্তরীণ ফলাফল",
-            titleEn: "Internal Results",
-            descBn:
-                "মাসিক ও সাপ্তাহিক পরীক্ষার ফলাফল এখানে প্রকাশিত হয়। শিক্ষার্থীরা তাদের ফলাফল অনলাইনে দেখতে ও ডাউনলোড করতে পারে।",
-            descEn:
-                "Monthly and weekly exam results are published here. Students can view and download their results online.",
-            icon: <FaChartLine className="text-4xl" />,
-            color: "from-blue-500 to-indigo-500",
-            table: [
-                { subject: "বাংলা", grade: "A", marks: 85 },
-                { subject: "গণিত", grade: "A+", marks: 92 },
-                { subject: "ইংরেজি", grade: "B+", marks: 78 },
-            ],
-        },
-        {
-            titleBn: "বার্ষিক পরীক্ষা ফলাফল",
-            titleEn: "Annual Exam Results",
-            descBn:
-                "প্রতিটি শিক্ষাবর্ষ শেষে বার্ষিক পরীক্ষার ফলাফল প্রকাশ করা হয়। এটি শিক্ষার্থীদের পরবর্তী শ্রেণিতে উত্তীর্ণ হওয়ার জন্য বিবেচনা করা হয়।",
-            descEn:
-                "At the end of each academic year, annual exam results are published. These are considered for promotion to the next grade.",
-            icon: <MdSchool className="text-4xl" />,
-            color: "from-green-500 to-emerald-500",
-            table: [
-                { subject: "বাংলা", grade: "A+", marks: 95 },
-                { subject: "গণিত", grade: "A", marks: 88 },
-                { subject: "বিজ্ঞান", grade: "A+", marks: 91 },
-                { subject: "ইংরেজি", grade: "A", marks: 85 },
-            ],
-        },
-        {
-            titleBn: "বৃত্তি পরীক্ষা ফলাফল",
-            titleEn: "Scholarship Exam Results",
-            descBn:
-                "প্রতিভাবান শিক্ষার্থীদের উৎসাহিত করার জন্য বৃত্তি পরীক্ষার ফলাফল প্রকাশ করা হয়। নির্বাচিত শিক্ষার্থীরা বিশেষ পুরস্কার পেয়ে থাকে।",
-            descEn:
-                "Scholarship exam results are published to encourage talented students. Selected students receive special awards and recognition.",
-            icon: <FaTrophy className="text-4xl" />,
-            color: "from-yellow-500 to-orange-500",
-            table: [
-                { name: "রাকিবুল হাসান", grade: "Class 5", scholarship: "Talent Pool" },
-                { name: "মাহমুদা আক্তার", grade: "Class 8", scholarship: "General" },
-                { name: "সাইফুল ইসলাম", grade: "Class 5", scholarship: "General" },
-            ],
-        },
+    const classes = [
+        { id: 1, name: "প্রথম শ্রেণী" },
+        { id: 2, name: "দ্বিতীয় শ্রেণী" },
+        { id: 3, name: "তৃতীয় শ্রেণী" },
+        { id: 4, name: "চতুর্থ শ্রেণী" },
+        { id: 5, name: "পঞ্চম শ্রেণী" },
     ];
 
+    // 🟢 ডাটা ফেচ
+    useEffect(() => {
+        async function studentMarks() {
+            try {
+                const res = await fetch("/api/students-mark", { method: "GET" });
+                const data = await res.json();
+                if (data.success) setStudentResult(data.message);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        studentMarks();
+    }, []);
+
+    // 🟢 ফিল্টার করা রেজাল্ট
+    const filteredResults = studentResult
+        .filter(
+            (s) =>
+                s.year?.toString() === (marksYear || "2025") &&
+                s.class_name === (selectedClass || "প্রথম শ্রেণী") &&
+                (searchRoll ? String(s.rollNumber).includes(searchRoll) : true) // 🆕 রোল ফিল্টার
+        )
+        .sort((a, b) => Number(a.rollNumber) - Number(b.rollNumber));
+
     return (
-        <main className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen py-12 px-4">
-            <div className="max-w-6xl mx-auto">
-                {/* Header */}
-                <header className="text-center mb-12">
-                    <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-                        {lang ? "ফলাফল" : "Results"}
-                    </h1>
-                    <p className="mt-2 text-gray-600">
-                        {lang
-                            ? "এখানে অভ্যন্তরীণ, বার্ষিক এবং বৃত্তি পরীক্ষার সকল ফলাফল প্রকাশিত হয়।"
-                            : "Here you can find all internal, annual, and scholarship exam results."}
-                    </p>
-                </header>
-
-                {/* Sections */}
-                <div className="space-y-12">
-                    {resultSections.map((section, i) => (
-                        <div
-                            key={i}
-                            className="bg-white rounded-2xl shadow-lg overflow-hidden border hover:shadow-2xl transition"
-                        >
-                            <div
-                                className={`bg-gradient-to-r ${section.color} text-white p-6 flex flex-col items-center justify-center`}
-                            >
-                                {section.icon}
-                                <h2 className="mt-2 text-xl font-bold text-center">
-                                    {lang ? section.titleBn : section.titleEn}
-                                </h2>
-                            </div>
-
-                            <div className="p-6">
-                                <p className="text-gray-700 text-center mb-6">
-                                    {lang ? section.descBn : section.descEn}
-                                </p>
-
-                                {/* Table */}
-                                <div className="overflow-x-auto">
-                                    <table className="min-w-full border text-sm text-gray-700">
-                                        <thead className="bg-gray-100 text-gray-800">
-                                            <tr>
-                                                {i === 2 ? (
-                                                    <>
-                                                        <th className="border px-4 py-2">নাম / Name</th>
-                                                        <th className="border px-4 py-2">শ্রেণি / Class</th>
-                                                        <th className="border px-4 py-2">বৃত্তি / Scholarship</th>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <th className="border px-4 py-2">বিষয় / Subject</th>
-                                                        <th className="border px-4 py-2">গ্রেড / Grade</th>
-                                                        <th className="border px-4 py-2">মার্কস / Marks</th>
-                                                    </>
-                                                )}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {section.table.map((row, j) => (
-                                                <tr
-                                                    key={j}
-                                                    className="odd:bg-white even:bg-gray-50 hover:bg-gray-100 transition"
-                                                >
-                                                    {i === 2 ? (
-                                                        <>
-                                                            <td className="border px-4 py-2">{row.name}</td>
-                                                            <td className="border px-4 py-2">{row.grade}</td>
-                                                            <td className="border px-4 py-2">{row.scholarship}</td>
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <td className="border px-4 py-2">{row.subject}</td>
-                                                            <td className="border px-4 py-2">{row.grade}</td>
-                                                            <td className="border px-4 py-2">{row.marks}</td>
-                                                        </>
-                                                    )}
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div className="text-center mt-6">
-                                    <button className="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
-                                        {lang ? "আরও দেখুন" : "View More"}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Notice */}
-                <div className="mt-12 bg-white rounded-2xl shadow p-6 text-center border">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                        {lang ? "ফলাফল সম্পর্কিত নোটিশ" : "Result Notice"}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                        {lang
-                            ? "ফলাফল প্রকাশের নির্ধারিত তারিখ ওয়েবসাইটে আগেই জানানো হবে। শিক্ষার্থীরা লগইন করে বিস্তারিত ফলাফল দেখতে পারবে।"
-                            : "The date of result publication will be announced earlier on the website. Students will be able to log in and view detailed results."}
-                    </p>
-                </div>
+        <main className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors">
+            {/* Header */}
+            <div className="text-center">
+                <h1 className="text-3xl font-bold text-green-600 dark:text-green-400 flex justify-center items-center gap-2">
+                    <GraduationCap className="w-8 h-8" />বার্ষিক পরীক্ষার ফলাফল
+                </h1>
+                <p className="text-gray-600 dark:text-gray-300 mt-2">
+                    শ্রেণি, সাল এবং রোল দিয়ে সার্চ করুন 📖
+                </p>
             </div>
+
+            {/* Class List */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-5">
+                {classes.map((cls) => (
+                    <motion.div
+                        key={cls.id}
+                        whileHover={{ scale: 1.05 }}
+                        className={`cursor-pointer rounded-2xl shadow-md p-6 text-center font-semibold border transition-all ${selectedClass === cls.name
+                            ? "bg-gradient-to-r from-green-400 to-blue-400 text-white shadow-lg"
+                            : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 hover:shadow-xl"
+                            }`}
+                        onClick={() => setSelectedClass(cls.name)}
+                    >
+                        <Users className="w-8 h-8 mx-auto mb-2 text-green-600 dark:text-green-400" />
+                        {cls.name}
+                    </motion.div>
+                ))}
+            </div>
+
+            {/* Year + Roll Filter */}
+            <div className="mt-4 flex items-center space-x-3 justify-end text-right">
+                <input
+                    type="number"
+                    placeholder="Year"
+                    value={marksYear}
+                    onChange={(e) => {
+                        const value = e.target.value.slice(0, 4);
+                        setMarksYear(value);
+                    }}
+                    className="p-2 w-24 rounded border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+                />
+                <input
+                    type="number"
+                    placeholder="Roll"
+                    value={searchRoll}
+                    onChange={(e) => setSearchRoll(e.target.value)}
+                    className="p-2 w-28 rounded border dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+                />
+            </div>
+
+            {/* Student Results */}
+            <div className="w-full bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md min-h-[200px] overflow-x-auto">
+                {filteredResults.length > 0 ? (
+                    <table className="min-w-full border text-sm text-gray-700 dark:text-gray-200">
+                        <thead className="bg-blue-600 text-white">
+                            <tr>
+                                <th className="border px-4 py-2">নাম (বাংলা)</th>
+                                <th className="border px-4 py-2">নাম (English)</th>
+                                <th className="border px-4 py-2">রোল</th>
+                                <th className="border px-4 py-2">শ্রেণি</th>
+                                <th className="border px-4 py-2">সেকশন</th>
+                                <th className="border px-4 py-2">সাল</th>
+                                <th className="border px-4 py-2">অপশন</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredResults.map((mark, i) => (
+                                <tr
+                                    key={mark._id}
+                                    className={`${i % 2 === 0 ? "bg-white dark:bg-gray-700" : "bg-gray-50 dark:bg-gray-600"} hover:bg-gray-100 dark:hover:bg-gray-500 transition`}
+                                >
+                                    <td className="border px-4 text-center py-2">{mark.name_bn}</td>
+                                    <td className="border px-4 text-center py-2">{mark.name_en}</td>
+                                    <td className="border px-4 text-center py-2">{mark.rollNumber}</td>
+                                    <td className="border px-4 text-center py-2">{mark.class_name}</td>
+                                    <td className="border px-4 text-center py-2">{mark.section || "-"}</td>
+                                    <td className="border px-4 text-center py-2">{mark.year}</td>
+                                    <td className="border px-4 text-center py-2">
+                                        <button
+                                            onClick={() => setSelectedStudent(mark)}
+                                            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+                                        >
+                                            📑 মার্কশীট
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p className="text-center text-gray-500 dark:text-gray-400 py-6">
+                        ❌ কোনো ফলাফল পাওয়া যায়নি
+                    </p>
+                )}
+            </div>
+
+
+            {/* Modal for Marksheet */}
+            {selectedStudent && (
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+                        <button
+                            onClick={() => setSelectedStudent(null)}
+                            className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
+                        >
+                            ✖
+                        </button>
+                        <h2 className="text-xl font-bold text-center text-green-600 mb-4">
+                            মার্কশীট - {selectedStudent.name_bn}
+                        </h2>
+                        <p className="text-center text-gray-600 mb-4">
+                            রোল: {selectedStudent.rollNumber} | শ্রেণি: {selectedStudent.class_name} | সাল: {selectedStudent.year}
+                        </p>
+                        <table className="min-w-full border text-sm text-gray-700">
+                            <thead className="bg-gray-100">
+                                <tr>
+                                    <th className="border px-4 py-2">বিষয়</th>
+                                    <th className="border px-4 py-2">নম্বর</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td className="border px-4 py-2">বাংলা</td><td className="border px-4 py-2">{selectedStudent.bangla}</td></tr>
+                                <tr><td className="border px-4 py-2">ইংরেজি</td><td className="border px-4 py-2">{selectedStudent.english}</td></tr>
+                                <tr><td className="border px-4 py-2">গণিত</td><td className="border px-4 py-2">{selectedStudent.math}</td></tr>
+                                <tr><td className="border px-4 py-2">বিজ্ঞান</td><td className="border px-4 py-2">{selectedStudent.science}</td></tr>
+                                <tr><td className="border px-4 py-2">ধর্ম</td><td className="border px-4 py-2">{selectedStudent.religion}</td></tr>
+                                <tr><td className="border px-4 py-2">সামাজিক বিজ্ঞান</td><td className="border px-4 py-2">{selectedStudent.social}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
         </main>
     );
 }
-
-
-// "use client";
-
-// import { useState } from "react";
-
-// const classes = ["ক্লাস ৫", "ক্লাস ৬", "ক্লাস ৭", "ক্লাস ৮", "ক্লাস ৯", "ক্লাস ১০"];
-
-// const examResults = {
-//   "ক্লাস ৫": {
-//     "প্রথম সাময়িক": [
-//       { roll: 1, name: "রাকিব", subject: "বাংলা", marks: 85, grade: "A" },
-//       { roll: 2, name: "মাহি", subject: "গণিত", marks: 90, grade: "A+" },
-//     ],
-//     "দ্বিতীয় সাময়িক": [
-//       { roll: 1, name: "রাকিব", subject: "ইংরেজি", marks: 78, grade: "B+" },
-//     ],
-//     "বার্ষিক": [
-//       { roll: 2, name: "মাহি", subject: "বিজ্ঞান", marks: 88, grade: "A" },
-//     ],
-//   },
-//   "ক্লাস ৬": {
-//     "প্রথম সাময়িক": [
-//       { roll: 5, name: "সুমন", subject: "বাংলা", marks: 80, grade: "A" },
-//     ],
-//     "দ্বিতীয় সাময়িক": [],
-//     "বার্ষিক": [],
-//   },
-//   // অন্যান্য ক্লাস এভাবেই...
-// };
-
-// export default function ResultsPage() {
-//   const [selectedClass, setSelectedClass] = useState(null);
-//   const [selectedExam, setSelectedExam] = useState("প্রথম সাময়িক");
-//   const [searchRoll, setSearchRoll] = useState("");
-
-//   const results =
-//     selectedClass && examResults[selectedClass]
-//       ? examResults[selectedClass][selectedExam].filter(
-//           (r) => !searchRoll || r.roll.toString() === searchRoll
-//         )
-//       : [];
-
-//   return (
-//     <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 py-10 px-4">
-//       <div className="max-w-6xl mx-auto">
-//         {/* Header */}
-//         <header className="text-center mb-10">
-//           <h1 className="text-3xl font-bold text-blue-400">🎓 পরীক্ষার ফলাফল</h1>
-//           <p className="text-gray-300 mt-2">
-//             এখানে ক্লাসভিত্তিক ও রোল নাম্বার অনুযায়ী ফলাফল দেখা যাবে।
-//           </p>
-//         </header>
-
-//         {/* Class Tabs */}
-//         <div className="flex flex-wrap gap-3 justify-center mb-8">
-//           {classes.map((cls) => (
-//             <button
-//               key={cls}
-//               onClick={() => setSelectedClass(cls)}
-//               className={`px-5 py-2 rounded-lg font-medium transition ${
-//                 selectedClass === cls
-//                   ? "bg-blue-600 text-white"
-//                   : "bg-gray-700 hover:bg-gray-600"
-//               }`}
-//             >
-//               {cls}
-//             </button>
-//           ))}
-//         </div>
-
-//         {/* Exam Tabs */}
-//         {selectedClass && (
-//           <div className="flex gap-3 justify-center mb-6">
-//             {["প্রথম সাময়িক", "দ্বিতীয় সাময়িক", "বার্ষিক"].map((exam) => (
-//               <button
-//                 key={exam}
-//                 onClick={() => setSelectedExam(exam)}
-//                 className={`px-4 py-2 rounded-lg font-medium transition ${
-//                   selectedExam === exam
-//                     ? "bg-green-600 text-white"
-//                     : "bg-gray-700 hover:bg-gray-600"
-//                 }`}
-//               >
-//                 {exam}
-//               </button>
-//             ))}
-//           </div>
-//         )}
-
-//         {/* Search */}
-//         {selectedClass && (
-//           <div className="flex justify-center mb-6">
-//             <input
-//               type="number"
-//               placeholder="রোল নাম্বার দিয়ে খুঁজুন..."
-//               className="p-2 w-64 rounded-lg bg-gray-700 border border-gray-600 text-white"
-//               value={searchRoll}
-//               onChange={(e) => setSearchRoll(e.target.value)}
-//             />
-//           </div>
-//         )}
-
-//         {/* Results Table */}
-//         <div className="bg-gray-800 rounded-xl shadow-lg overflow-x-auto">
-//           {results.length > 0 ? (
-//             <table className="min-w-full text-sm text-gray-200">
-//               <thead className="bg-gray-700 text-gray-100">
-//                 <tr>
-//                   <th className="px-4 py-2 border">রোল</th>
-//                   <th className="px-4 py-2 border">নাম</th>
-//                   <th className="px-4 py-2 border">বিষয়</th>
-//                   <th className="px-4 py-2 border">মার্কস</th>
-//                   <th className="px-4 py-2 border">গ্রেড</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {results.map((row, i) => (
-//                   <tr
-//                     key={i}
-//                     className="odd:bg-gray-800 even:bg-gray-700 hover:bg-gray-600 transition"
-//                   >
-//                     <td className="px-4 py-2 border">{row.roll}</td>
-//                     <td className="px-4 py-2 border">{row.name}</td>
-//                     <td className="px-4 py-2 border">{row.subject}</td>
-//                     <td className="px-4 py-2 border">{row.marks}</td>
-//                     <td className="px-4 py-2 border">{row.grade}</td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           ) : selectedClass ? (
-//             <p className="text-center text-gray-400 py-6">
-//               কোনো ফলাফল পাওয়া যায়নি।
-//             </p>
-//           ) : (
-//             <p className="text-center text-gray-400 py-6">
-//               আগে একটি ক্লাস নির্বাচন করুন।
-//             </p>
-//           )}
-//         </div>
-//       </div>
-//     </main>
-//   );
-// }
