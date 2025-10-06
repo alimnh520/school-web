@@ -14,9 +14,7 @@ export const POST = async (request) => {
             return NextResponse.json({ success: false, message: "ইউজার পাওয়া যায়নি!" });
         }
 
-        const isMatch = await bcrypt.compare(password, admin.password);
-
-        if (!isMatch) {
+        if (password !== admin.password) {
             return NextResponse.json({ success: false, message: "পাসওয়ার্ড ভুল!" });
         }
 
